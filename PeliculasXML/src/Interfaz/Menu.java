@@ -32,6 +32,12 @@ public class Menu extends JFrame {
 		contentPane.add(btnNuevaPelcula);
 		
 		JButton btnVerPelculas = new JButton("Ver Pel\u00EDculas");
+		btnVerPelculas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				VerPelicula verPelicula = new VerPelicula();
+				verPelicula.setVisible(true);
+			}
+		});
 		btnVerPelculas.setBounds(66, 129, 170, 29);
 		contentPane.add(btnVerPelculas);
 		
