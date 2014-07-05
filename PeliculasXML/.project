@@ -14,4 +14,31 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>jdom-2.0.5-contrib.jar</name>
+			<type>1</type>
+			<location>/Users/alexsecundinovelazquez/Downloads/jdom-2/jdom-2.0.5-contrib.jar</location>
+		</link>
+		<link>
+			<name>jdom-2.0.5-javadoc.jar</name>
+			<type>1</type>
+			<location>/Users/alexsecundinovelazquez/Downloads/jdom-2/jdom-2.0.5-javadoc.jar</location>
+		</link>
+		<link>
+			<name>jdom-2.0.5-junit.jar</name>
+			<type>1</type>
+			<location>/Users/alexsecundinovelazquez/Downloads/jdom-2/jdom-2.0.5-junit.jar</location>
+		</link>
+		<link>
+			<name>jdom-2.0.5-sources.jar</name>
+			<type>1</type>
+			<location>/Users/alexsecundinovelazquez/Downloads/jdom-2/jdom-2.0.5-sources.jar</location>
+		</link>
+		<link>
+			<name>jdom-2.0.5.jar</name>
+			<type>1</type>
+			<location>/Users/alexsecundinovelazquez/Downloads/jdom-2/jdom-2.0.5.jar</location>
+		</link>
+	</linkedResources>
 </projectDescription>

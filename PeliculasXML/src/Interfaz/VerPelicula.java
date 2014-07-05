@@ -151,7 +151,7 @@ public class VerPelicula extends JFrame {
 				categoria = unaPelicula.getAttributes().getNamedItem("categoria").getNodeValue();
 				src = unaPelicula.getAttributes().getNamedItem("src").getNodeValue();
 				
-				Node nTitulo = datosPelicula.item(0);
+				Node nTitulo = datosPelicula.item(1);
 				if(nTitulo.getNodeType() == Node.ELEMENT_NODE){
 					Node texto = nTitulo.getFirstChild();
 					if(texto != null && texto.getNodeType() == Node.TEXT_NODE){
@@ -159,7 +159,7 @@ public class VerPelicula extends JFrame {
 					}
 				}
 				
-				Node nDirector = datosPelicula.item(1);
+				Node nDirector = datosPelicula.item(3);
 				if(nDirector.getNodeType() == Node.ELEMENT_NODE){
 					Node texto = nDirector.getFirstChild();
 					if(texto != null && texto.getNodeType() == Node.TEXT_NODE){
@@ -167,7 +167,8 @@ public class VerPelicula extends JFrame {
 					}
 				}
 				
-				Node nAnyo = datosPelicula.item(2);
+
+				Node nAnyo = datosPelicula.item(5);
 				if(nAnyo.getNodeType() == Node.ELEMENT_NODE){
 					Node texto = nAnyo.getFirstChild();
 					if(texto != null && texto.getNodeType() == Node.TEXT_NODE){

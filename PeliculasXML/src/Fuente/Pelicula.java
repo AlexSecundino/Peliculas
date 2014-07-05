@@ -45,6 +45,13 @@ public class Pelicula {
 		this.categoria = categoria;
 	}
 
+	@Override
+	public String toString() {
+		return "Pelicula [titulo=" + titulo + ", director=" + director
+				+ ", categoria=" + categoria + ", src=" + src + ", actores="
+				+ Arrays.toString(actores) + ", anyo=" + anyo + "]";
+	}
+
 	public String getSrc() {
 		return src;
 	}

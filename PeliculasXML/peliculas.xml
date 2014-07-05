@@ -1,13 +1,17 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<peliculas>
-	<pelicula categoria="CienciaFiccion" src="LOTR.jpg">
-		<titulo>El señor de los Anillos: La Comunidad del Anillo</titulo>
-		<director>No tiene director, se creó sola</director>
-		<año>2000</año>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><peliculas>
+	<pelicula categoria="Acción" src="LOTR.jpg">
+		<titulo>1</titulo>
+		<director>1.1</director>
+		<año>10</año>
 	</pelicula>
-	<pelicula categoria="Terror" src="LOTRII.jpg">
-		<titulo>El señor de los Anillos: Las dos Torres</titulo>
-		<director>PETER PARKER</director>
-		<año>2001</año>
+	<pelicula categoria="CienciaFiccion" src="LOTR.jpg">
+		<titulo>2</titulo>
+		<director>2.1</director>
+		<año>20</año>
+	</pelicula>
+	<pelicula categoria="CienciaFiccion" src="LOTRII.jpg">
+		<titulo>3</titulo>
+		<director>3.1</director>
+		<año>30</año>
 	</pelicula>
 </peliculas>

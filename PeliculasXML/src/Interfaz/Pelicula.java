@@ -3,31 +3,34 @@ package Interfaz;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
-
-import Fuente.Categoria;
-
-import javax.swing.JButton;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.*;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import Fuente.Categoria;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Pelicula extends JFrame {
 
@@ -39,6 +42,10 @@ public class Pelicula extends JFrame {
 	private JTextField txtTitulo;
 	private JTextField txtDirector;
 	private JTextArea txtActores;
+	
+	private DocumentBuilderFactory dbf;
+	private DocumentBuilder db;
+	private Document doc;
 
 	public Pelicula() {
 		setTitle("Nueva Pel\u00EDcula");
@@ -98,7 +105,10 @@ public class Pelicula extends JFrame {
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				a–adirPelicula();
+				if(crearPelicula())
+					JOptionPane.showMessageDialog(contentPane, "Se ha a–adido correctamente");
+				else
+					JOptionPane.showMessageDialog(contentPane, "Ha habido un error");
 			}
 		});
 		btnAceptar.setBounds(327, 300, 117, 29);
@@ -116,28 +126,25 @@ public class Pelicula extends JFrame {
 		addCategorias();
 	}
 
-	protected void a–adirPelicula() {
+	protected boolean crearPelicula() {
 	
+		boolean correcto = true;
+		
 		try {
-			//fabrica
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
 			
-			//nuevo documento
-			Document doc = db.newDocument();
-			
-			//raiz
-			Element rootElement = doc.createElement("peliculas");
-			doc.appendChild(rootElement);
+			crearDocumento();
+		
+			Element root = doc.getDocumentElement();
 			
 			//elementos
 			Element pelicula = doc.createElement("pelicula");
-			rootElement.appendChild(pelicula);
-			
+			root.appendChild(pelicula);
+				
 			Attr categoria = doc.createAttribute("categoria");
 			categoria.setValue(cbCategoria.getSelectedItem().toString());
 			pelicula.setAttributeNode(categoria);
 			
+				
 			Element titulo = doc.createElement("titulo");
 			titulo.appendChild(doc.createTextNode(txtTitulo.getText()));
 			pelicula.appendChild(titulo);
@@ -149,26 +156,39 @@ public class Pelicula extends JFrame {
 			Element anyo = doc.createElement("a–o");
 			anyo.appendChild(doc.createTextNode(txtAnyo.getText()));
 			pelicula.appendChild(anyo);
-			
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			DOMSource source = new DOMSource(doc);
-			
-			File file = new File("peliculas.xml");
-			
-			StreamResult result = new StreamResult(file);
-			
-			transformer.transform(source, result);
-			
-			
-		} catch (ParserConfigurationException e) {
-			JOptionPane.showMessageDialog(contentPane, "Error");
-		} catch (TransformerConfigurationException e) {
-			JOptionPane.showMessageDialog(contentPane, "Error");
-		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+						
+			try {
+				TransformerFactory transformerFactory = TransformerFactory.newInstance();
+				Transformer transformer = transformerFactory.newTransformer();
+				DOMSource source = new DOMSource(doc);
+				
+				File file = new File("peliculas.xml");
+				
+				StreamResult result = new StreamResult(file);
+				
+				transformer.transform(source, result);
+				
+			} catch (TransformerException e) {
+				correcto = false;
+			}
+		} catch (FileNotFoundException e1) {
+			JOptionPane.showMessageDialog(contentPane, "No se ha encontrado el archivo de origen");
+		} catch (ParserConfigurationException e1) {
+			e1.printStackTrace();
+		} catch (SAXException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
+		
+		return correcto;
+	}
+
+	private void crearDocumento() throws ParserConfigurationException, FileNotFoundException, SAXException, IOException {
+
+		dbf = DocumentBuilderFactory.newInstance();
+		db = dbf.newDocumentBuilder();
+		doc = db.parse(new InputSource(new FileInputStream("peliculas.xml")));
 	}
 
 	private void addCategorias() {
@@ -176,6 +196,7 @@ public class Pelicula extends JFrame {
 			cbCategoria.addItem(cat);
 		}
 	}
+	
 	public JComboBox getCbCategoria() {
 		return cbCategoria;
 	}
