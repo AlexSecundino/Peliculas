@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><peliculas>
-	<pelicula categoria="Acción" src="LOTR.jpg">
-		<titulo>1</titulo>
+	<pelicula categoria="accion" src="LOTR.jpg">
+		<titulo>Chuletas de queso</titulo>
 		<director>1.1</director>
 		<año>10</año>
 	</pelicula>
-	<pelicula categoria="CienciaFiccion" src="LOTR.jpg">
+	<pelicula categoria="cienciaFiccion" src="LOTR.jpg">
 		<titulo>2</titulo>
 		<director>2.1</director>
 		<año>20</año>
 	</pelicula>
-	<pelicula categoria="CienciaFiccion" src="LOTRII.jpg">
-		<titulo>3</titulo>
-		<director>3.1</director>
+	<pelicula categoria="cienciaFiccion" src="LOTRII.jpg">
+		<titulo>2</titulo>
+		<director>2</director>
 		<año>30</año>
 	</pelicula>
 </peliculas>

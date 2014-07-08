@@ -45,7 +45,7 @@ public class VerPelicula extends JFrame {
 	private JButton btnSiguiente;
 
 	public VerPelicula() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 453, 388);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -107,7 +107,8 @@ public class VerPelicula extends JFrame {
 		
 		cargarPeliculas();
 		
-		mostrarPelicula(peliculaActual);
+		if(listadoPeliculas.size() > 0)
+			mostrarPelicula(peliculaActual);
 	}
 
 	private void mostrarPelicula(int peliculaActual) {

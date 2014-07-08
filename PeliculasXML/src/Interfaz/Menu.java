@@ -42,6 +42,12 @@ public class Menu extends JFrame {
 		contentPane.add(btnVerPelculas);
 		
 		JButton btnBuscarPelculas = new JButton("Buscar Pel\u00EDculas");
+		btnBuscarPelculas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BuscarPeliculas buscarPeliculas = new BuscarPeliculas();
+				buscarPeliculas.setVisible(true);
+			}
+		});
 		btnBuscarPelculas.setBounds(66, 170, 170, 29);
 		contentPane.add(btnBuscarPelculas);
 		
