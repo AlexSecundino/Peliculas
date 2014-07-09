@@ -3,6 +3,7 @@ package Interfaz;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -32,6 +33,9 @@ import java.util.ArrayList;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+
 public class BuscarPeliculas extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -47,10 +51,15 @@ public class BuscarPeliculas extends JFrame {
 	private DocumentBuilderFactory dbf;
 	private DocumentBuilder db;
 	private Document doc;
+	private JTable table;
+	
+	private DefaultTableModel modelo;
+	private String[] columnas = {"Titulo", "Categoria", "Director", "A–o"};
+	private String[][] datos;
 
 	public BuscarPeliculas() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -82,9 +91,14 @@ public class BuscarPeliculas extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				peliculasEncontradas = buscarPeliculas();
+				
+				if(peliculasEncontradas.size() <= 0)
+					JOptionPane.showMessageDialog(contentPane, "No se ha encontrado ningœn resultado");
+				else
+					rellenarTabla();
 			}
 		});
-		btnBuscar.setBounds(309, 230, 117, 29);
+		btnBuscar.setBounds(162, 159, 117, 29);
 		contentPane.add(btnBuscar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
@@ -93,13 +107,23 @@ public class BuscarPeliculas extends JFrame {
 				dispose();
 			}
 		});
-		btnCancelar.setBounds(6, 230, 117, 29);
+		btnCancelar.setBounds(314, 370, 117, 29);
 		contentPane.add(btnCancelar);
 		
 		cbBuscar = new JComboBox();
 		cbBuscar.setEditable(true);
 		cbBuscar.setBounds(110, 120, 215, 27);
 		contentPane.add(cbBuscar);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(16, 204, 415, 155);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		modelo = new DefaultTableModel(datos, columnas);
+		table.setModel(modelo);
 		
 		addBuscarPor();
 	}
@@ -124,6 +148,7 @@ public class BuscarPeliculas extends JFrame {
 			NodeList peliculas = (NodeList) xp.compile(expresion).evaluate(doc, XPathConstants.NODESET);
 				
 			for(int i = 0; i <= peliculas.getLength() - 1; i++){
+				
 				NodeList camposPelicula = peliculas.item(i).getChildNodes();
 					
 				String categoria = camposPelicula.item(1).getParentNode().getAttributes().getNamedItem("categoria").getNodeValue();
@@ -134,11 +159,7 @@ public class BuscarPeliculas extends JFrame {
 				String anyo = camposPelicula.item(5).getFirstChild().getNodeValue();
 				Pelicula pelicula = new Pelicula(titulo, director, categoria, src, new String[0], Integer.parseInt(anyo));
 				encontradas.add(pelicula);
-				System.out.println(pelicula);
 			}
-			
-			if(encontradas.size() <= 0)
-				JOptionPane.showMessageDialog(contentPane, "No se ha encontrado ningœn resultado");
 			
 		} catch (XPathExpressionException e) {
 			JOptionPane.showMessageDialog(contentPane, "Error en la bœsqueda.");
@@ -156,6 +177,21 @@ public class BuscarPeliculas extends JFrame {
 		return encontradas;
 	}
 	
+	private void rellenarTabla() {
+		
+		while(table.getRowCount() > 0)
+			modelo.removeRow(0);
+		
+		for(Pelicula peli: peliculasEncontradas){
+			String[] datos = new String[4];
+			datos[0] = peli.getTitulo();
+			datos[1] = peli.getCategoria();
+			datos[2] = peli.getDirector();
+			datos[3] = Integer.toString(peli.getAnyo());
+			modelo.addRow(datos);
+		}
+	}
+
 	private void crearDocumento() throws ParserConfigurationException, FileNotFoundException, SAXException, IOException {
 
 		dbf = DocumentBuilderFactory.newInstance();
@@ -180,5 +216,8 @@ public class BuscarPeliculas extends JFrame {
 	}
 	public JComboBox getCbBuscar() {
 		return cbBuscar;
+	}
+	public JTable getTable() {
+		return table;
 	}
 }

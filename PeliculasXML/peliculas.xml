@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><peliculas>
-	<pelicula categoria="accion" src="LOTR.jpg">
-		<titulo>Chuletas de queso</titulo>
-		<director>1.1</director>
-		<año>10</año>
-	</pelicula>
 	<pelicula categoria="cienciaFiccion" src="LOTR.jpg">
-		<titulo>2</titulo>
-		<director>2.1</director>
-		<año>20</año>
+		<titulo>El señor de los anillos: La comunidad del anillo</titulo>
+		<director>Paco Porras</director>
+		<año>2000</año>
 	</pelicula>
 	<pelicula categoria="cienciaFiccion" src="LOTRII.jpg">
-		<titulo>2</titulo>
-		<director>2</director>
-		<año>30</año>
+		<titulo>El señor de los anillos: Las dos torres</titulo>
+		<director>Carlos Dominquez</director>
+		<año>2001</año>
+	</pelicula>
+	<pelicula categoria="accion" src="LOTRII.jpg">
+		<titulo>Futuro opaco</titulo>
+		<director>Elias</director>
+		<año>3000</año>
 	</pelicula>
 </peliculas>
