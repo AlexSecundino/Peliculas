@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -214,8 +215,15 @@ public class AddPelicula extends JFrame {
 			
 			try {
 				TransformerFactory transformerFactory = TransformerFactory.newInstance();
+				
+				transformerFactory.setAttribute("indent-number", new Integer(3));
+				
 				Transformer transformer = transformerFactory.newTransformer();
 				DOMSource source = new DOMSource(doc);
+				
+				transformer = transformerFactory.newTransformer();
+			    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 				
 				File file = new File("../../../Desktop/PeliculasXML/peliculas.xml");
 				
