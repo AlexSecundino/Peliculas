@@ -139,7 +139,7 @@ public class VerPelicula extends JFrame {
 		txtCategoria.setText(pelicula.getCategoria());
 		txtAnyo.setText(Integer.toString(pelicula.getAnyo()));
 		
-		ImageIcon image = new ImageIcon("Images/" + pelicula.getSrc());
+		ImageIcon image = new ImageIcon("../../../Desktop/PeliculasXML/Imagenes/" + pelicula.getSrc());
 		
 		Icon icono = new ImageIcon(image.getImage().getScaledInstance(lblImage.getWidth(),  lblImage.getHeight(),  Image.SCALE_DEFAULT));
 		lblImage.setIcon(icono);
@@ -151,7 +151,7 @@ public class VerPelicula extends JFrame {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db;
 			db = dbf.newDocumentBuilder();
-			Document doc = db.parse("peliculas.xml");
+			Document doc = db.parse("../../../Desktop/PeliculasXML/peliculas.xml");
 			
 			Element raiz = doc.getDocumentElement();
 			
@@ -174,16 +174,11 @@ public class VerPelicula extends JFrame {
 				formato = unaPelicula.getAttributes().getNamedItem("formato").getNodeValue();
 				src = unaPelicula.getAttributes().getNamedItem("src").getNodeValue();
 				
-				System.out.println(categoria);
-				System.out.println(formato);
-				System.out.println(src);
-				
 				Node nTitulo = datosPelicula.item(1);
 				if(nTitulo.getNodeType() == Node.ELEMENT_NODE){
 					Node texto = nTitulo.getFirstChild();
 					if(texto != null && texto.getNodeType() == Node.TEXT_NODE){
 						titulo = texto.getNodeValue();
-						System.out.println(titulo);
 					}
 				}
 				
@@ -192,7 +187,6 @@ public class VerPelicula extends JFrame {
 					Node texto = nDirector.getFirstChild();
 					if(texto != null && texto.getNodeType() == Node.TEXT_NODE){
 						director = texto.getNodeValue();
-						System.out.println(director);
 					}
 				}
 				
@@ -202,12 +196,10 @@ public class VerPelicula extends JFrame {
 					Node texto = nAnyo.getFirstChild();
 					if(texto != null && texto.getNodeType() == Node.TEXT_NODE){
 						anyo = texto.getNodeValue();
-						System.out.println(anyo);
 					}
 				}
 				
 				pelicula = new Pelicula(titulo, director, categoria, formato, src, new String[0], Integer.parseInt(anyo));
-				System.out.println(pelicula);
 				listadoPeliculas.add(pelicula);
 			}
 			

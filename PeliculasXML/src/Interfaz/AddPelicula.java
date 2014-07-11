@@ -217,7 +217,7 @@ public class AddPelicula extends JFrame {
 				Transformer transformer = transformerFactory.newTransformer();
 				DOMSource source = new DOMSource(doc);
 				
-				File file = new File("peliculas.xml");
+				File file = new File("../../../Desktop/PeliculasXML/peliculas.xml");
 				
 				StreamResult result = new StreamResult(file);
 				
@@ -246,7 +246,7 @@ public class AddPelicula extends JFrame {
 		
 		try{
 			dis = new DataInputStream(new FileInputStream(imagen));
-			dos = new DataOutputStream(new FileOutputStream("Images/" + imagen.getName()));
+			dos = new DataOutputStream(new FileOutputStream("../../../Desktop/PeliculasXML/Imagenes/" + imagen.getName()));
 			
 			boolean copiar = true;
 			
@@ -288,7 +288,7 @@ public class AddPelicula extends JFrame {
 
 		dbf = DocumentBuilderFactory.newInstance();
 		db = dbf.newDocumentBuilder();
-		doc = db.parse(new InputSource(new FileInputStream("peliculas.xml")));
+		doc = db.parse(new InputSource(new FileInputStream("../../../Desktop/PeliculasXML/peliculas.xml")));
 	}
 	
 	public JComboBox getCbCategoria() {

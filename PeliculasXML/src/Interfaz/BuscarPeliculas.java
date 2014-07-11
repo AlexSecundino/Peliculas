@@ -21,6 +21,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import Fuente.Categoria;
+import Fuente.Formato;
 import Fuente.OpcionesBusqueda;
 import Fuente.Pelicula;
 
@@ -46,6 +47,7 @@ public class BuscarPeliculas extends JFrame {
 	
 	private OpcionesBusqueda[] opcionesBusqueda = OpcionesBusqueda.values();
 	private Categoria[] opcionesCategoria = Categoria.values();
+	private Formato[] opcionesFormato = Formato.values();
 	private ArrayList<Pelicula> peliculasEncontradas;
 	
 	private DocumentBuilderFactory dbf;
@@ -78,6 +80,10 @@ public class BuscarPeliculas extends JFrame {
 					cbBuscar.setEditable(false);
 					addCategorias();
 				}
+				if(cbOpcionesBusqueda.getSelectedItem().toString().equals("formato")){
+					cbBuscar.setEditable(false);
+					addFormatos();
+				}
 			}
 		});
 		cbOpcionesBusqueda.setBounds(110, 41, 215, 27);
@@ -92,8 +98,10 @@ public class BuscarPeliculas extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				peliculasEncontradas = buscarPeliculas();
 				
-				if(peliculasEncontradas.size() <= 0)
+				if(peliculasEncontradas.size() <= 0){
+					borrarTabla();
 					JOptionPane.showMessageDialog(contentPane, "No se ha encontrado ningœn resultado");
+				}
 				else
 					rellenarTabla();
 			}
@@ -138,7 +146,7 @@ public class BuscarPeliculas extends JFrame {
 			XPath xp = xpf.newXPath();
 			String expresion = null;
 			
-			if(cbOpcionesBusqueda.getSelectedItem().equals(OpcionesBusqueda.categoria)){
+			if(cbOpcionesBusqueda.getSelectedItem().equals(OpcionesBusqueda.categoria) || cbOpcionesBusqueda.getSelectedItem().equals(OpcionesBusqueda.formato)){
 				expresion = "/peliculas/pelicula[@" + cbOpcionesBusqueda.getSelectedItem().toString() + "='" + cbBuscar.getSelectedItem().toString() + "']";
 			}
 			else{
@@ -180,8 +188,7 @@ public class BuscarPeliculas extends JFrame {
 	
 	private void rellenarTabla() {
 		
-		while(table.getRowCount() > 0)
-			modelo.removeRow(0);
+		borrarTabla();
 		
 		for(Pelicula peli: peliculasEncontradas){
 			String[] datos = new String[5];
@@ -194,11 +201,16 @@ public class BuscarPeliculas extends JFrame {
 		}
 	}
 
+	private void borrarTabla() {
+		while(table.getRowCount() > 0)
+			modelo.removeRow(0);
+	}
+
 	private void crearDocumento() throws ParserConfigurationException, FileNotFoundException, SAXException, IOException {
 
 		dbf = DocumentBuilderFactory.newInstance();
 		db = dbf.newDocumentBuilder();
-		doc = db.parse(new InputSource(new FileInputStream("peliculas.xml")));
+		doc = db.parse(new InputSource(new FileInputStream("../../../Desktop/PeliculasXML/peliculas.xml")));
 	}
 
 	private void addBuscarPor() {
@@ -210,6 +222,12 @@ public class BuscarPeliculas extends JFrame {
 	private void addCategorias() {
 		for(int i = 0; i <= opcionesCategoria.length - 1; i++){
 			cbBuscar.addItem(opcionesCategoria[i]);
+		}
+	}
+	
+	private void addFormatos() {
+		for(int i = 0; i <= opcionesFormato.length - 1; i++){
+			cbBuscar.addItem(opcionesFormato[i]);
 		}
 	}
 	
