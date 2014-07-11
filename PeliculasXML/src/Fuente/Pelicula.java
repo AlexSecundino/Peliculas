@@ -7,15 +7,17 @@ public class Pelicula {
 	String titulo;
 	String director;
 	String categoria;
+	String formato;
 	String src;
 	String[] actores;
 	int anyo;
 	
-	public Pelicula(String titulo, String director, String categoria, String src, String[] actores, int anyo) {
+	public Pelicula(String titulo, String director, String categoria, String formato, String src, String[] actores, int anyo) {
 		super();
 		this.titulo = titulo;
 		this.director = director;
 		this.categoria = categoria;
+		this.formato = formato;
 		this.src = src;
 		this.actores = actores;
 		this.anyo = anyo;
@@ -45,13 +47,14 @@ public class Pelicula {
 		this.categoria = categoria;
 	}
 
-	@Override
-	public String toString() {
-		return "Pelicula [titulo=" + titulo + ", director=" + director
-				+ ", categoria=" + categoria + ", src=" + src + ", actores="
-				+ Arrays.toString(actores) + ", anyo=" + anyo + "]";
+	public String getFormato() {
+		return formato;
 	}
 
+	public void setFormato(String formato) {
+		this.formato = formato;
+	}
+	
 	public String getSrc() {
 		return src;
 	}
@@ -75,4 +78,14 @@ public class Pelicula {
 	public void setAnyo(int anyo) {
 		this.anyo = anyo;
 	}	
+	
+	
+
+	@Override
+	public String toString() {
+		return "Pelicula [titulo=" + titulo + ", director=" + director
+				+ ", categoria=" + categoria + ", formato=" + formato + ", src=" + src + ", actores="
+				+ Arrays.toString(actores) + ", anyo=" + anyo + "]";
+	}
+
 }

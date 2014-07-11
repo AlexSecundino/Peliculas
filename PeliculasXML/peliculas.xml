@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><peliculas>
-	<pelicula categoria="cienciaFiccion" src="LOTR.jpg">
-		<titulo>El señor de los anillos: La comunidad del anillo</titulo>
-		<director>Paco Porras</director>
-		<año>2000</año>
-	</pelicula>
-	<pelicula categoria="cienciaFiccion" src="LOTRII.jpg">
-		<titulo>El señor de los anillos: Las dos torres</titulo>
-		<director>Carlos Dominquez</director>
-		<año>2001</año>
-	</pelicula>
-	<pelicula categoria="accion" src="LOTRII.jpg">
-		<titulo>Futuro opaco</titulo>
-		<director>Elias</director>
-		<año>3000</año>
-	</pelicula>
+
+
+<pelicula categoria="cienciaFiccion" formato="VHS" src="basilisco.jpg">
+<titulo>Basilisco</titulo>
+<director>1</director>
+<año>1</año>
+</pelicula>
+<pelicula categoria="comedia" formato="Blu_Ray" src="obelix01.jpg">
+<titulo>Obelix</titulo>
+<director>2</director>
+<año>2</año>
+</pelicula>
 </peliculas>

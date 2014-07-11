@@ -4,12 +4,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,15 +23,20 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import Fuente.Categoria;
+import Fuente.Formato;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class Pelicula extends JFrame {
+public class AddPelicula extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -41,13 +45,16 @@ public class Pelicula extends JFrame {
 	private JComboBox cbCategoria;
 	private JTextField txtTitulo;
 	private JTextField txtDirector;
-	private JTextArea txtActores;
 	
 	private DocumentBuilderFactory dbf;
 	private DocumentBuilder db;
 	private Document doc;
+	private JTextField txtSrc;
+	private JComboBox cbFormato;
+	
+	private File imagen;
 
-	public Pelicula() {
+	public AddPelicula() {
 		setTitle("Nueva Pel\u00EDcula");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 498, 400);
@@ -82,7 +89,7 @@ public class Pelicula extends JFrame {
 		txtAnyo.setColumns(10);
 		
 		JLabel lblActores = new JLabel("Actores:");
-		lblActores.setBounds(22, 110, 61, 16);
+		lblActores.setBounds(22, 166, 61, 16);
 		contentPane.add(lblActores);
 		
 		txtTitulo = new JTextField();
@@ -95,13 +102,6 @@ public class Pelicula extends JFrame {
 		contentPane.add(txtDirector);
 		txtDirector.setColumns(10);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(128, 117, 314, 133);
-		contentPane.add(scrollPane);
-		
-		txtActores = new JTextArea();
-		scrollPane.setViewportView(txtActores);
-		
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,7 +111,7 @@ public class Pelicula extends JFrame {
 					JOptionPane.showMessageDialog(contentPane, "Ha habido un error");
 			}
 		});
-		btnAceptar.setBounds(327, 300, 117, 29);
+		btnAceptar.setBounds(375, 343, 117, 29);
 		contentPane.add(btnAceptar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
@@ -120,10 +120,56 @@ public class Pelicula extends JFrame {
 				dispose();
 			}
 		});
-		btnCancelar.setBounds(193, 300, 117, 29);
+		btnCancelar.setBounds(247, 343, 117, 29);
 		contentPane.add(btnCancelar);
 		
+		JLabel lblFormato = new JLabel("Formato: ");
+		lblFormato.setBounds(22, 110, 84, 16);
+		contentPane.add(lblFormato);
+		
+		cbFormato = new JComboBox();
+		cbFormato.setBounds(118, 106, 173, 27);
+		contentPane.add(cbFormato);
+		
+		JLabel lblImagen = new JLabel("Imagen:");
+		lblImagen.setBounds(22, 138, 84, 16);
+		contentPane.add(lblImagen);
+		
+		txtSrc = new JTextField();
+		txtSrc.setBounds(118, 132, 211, 28);
+		contentPane.add(txtSrc);
+		txtSrc.setColumns(10);
+		
+		JButton btnExplorar = new JButton("Explorar");
+		btnExplorar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser jfc = new JFileChooser();
+				jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				int sel = jfc.showOpenDialog(contentPane);
+				if(sel == JFileChooser.APPROVE_OPTION)
+				{
+					imagen = jfc.getSelectedFile();
+					txtSrc.setText(imagen.getName());
+				}
+			}
+		});
+		btnExplorar.setBounds(327, 133, 117, 29);
+		contentPane.add(btnExplorar);
+		
 		addCategorias();
+		addFormato();
+	}
+
+	private void addFormato() {
+		for(Formato formato: Formato.values()){
+			cbFormato.addItem(formato);
+		}
+	}
+
+	private void addCategorias() {
+		for(Categoria cat: Categoria.values()){
+			cbCategoria.addItem(cat);
+		}
 	}
 
 	protected boolean crearPelicula() {
@@ -144,6 +190,13 @@ public class Pelicula extends JFrame {
 			categoria.setValue(cbCategoria.getSelectedItem().toString());
 			pelicula.setAttributeNode(categoria);
 			
+			Attr src = doc.createAttribute("src");
+			src.setValue(txtSrc.getText());
+			pelicula.setAttributeNode(src);
+			
+			Attr formato = doc.createAttribute("formato");
+			formato.setValue(cbFormato.getSelectedItem().toString());
+			pelicula.setAttributeNode(formato);
 				
 			Element titulo = doc.createElement("titulo");
 			titulo.appendChild(doc.createTextNode(txtTitulo.getText()));
@@ -156,7 +209,9 @@ public class Pelicula extends JFrame {
 			Element anyo = doc.createElement("a–o");
 			anyo.appendChild(doc.createTextNode(txtAnyo.getText()));
 			pelicula.appendChild(anyo);
-						
+				
+			copiarImagen();
+			
 			try {
 				TransformerFactory transformerFactory = TransformerFactory.newInstance();
 				Transformer transformer = transformerFactory.newTransformer();
@@ -184,24 +239,60 @@ public class Pelicula extends JFrame {
 		return correcto;
 	}
 
+	private void copiarImagen() {
+		
+		DataInputStream dis = null;
+		DataOutputStream dos = null;
+		
+		try{
+			dis = new DataInputStream(new FileInputStream(imagen));
+			dos = new DataOutputStream(new FileOutputStream("Images/" + imagen.getName()));
+			
+			boolean copiar = true;
+			
+			while(copiar){
+				
+				try {
+					byte b = new Byte(dis.readByte());
+					dos.write(b);
+				}
+				catch(EOFException e){
+					copiar = false;
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		catch(FileNotFoundException e){}
+		finally{
+			if(dis != null){
+				try {
+					dis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if(dos != null){
+				try {
+					dos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+
 	private void crearDocumento() throws ParserConfigurationException, FileNotFoundException, SAXException, IOException {
 
 		dbf = DocumentBuilderFactory.newInstance();
 		db = dbf.newDocumentBuilder();
 		doc = db.parse(new InputSource(new FileInputStream("peliculas.xml")));
 	}
-
-	private void addCategorias() {
-		for(Categoria cat: Categoria.values()){
-			cbCategoria.addItem(cat);
-		}
-	}
 	
 	public JComboBox getCbCategoria() {
 		return cbCategoria;
-	}
-	public JTextField getTextField() {
-		return txtTitulo;
 	}
 	public JTextField getTxtDirector() {
 		return txtDirector;
@@ -209,7 +300,13 @@ public class Pelicula extends JFrame {
 	public JTextField getTxtAnyo() {
 		return txtAnyo;
 	}
-	public JTextArea getTextArea() {
-		return txtActores;
+	public JTextField getTxtTitulo() {
+		return txtTitulo;
+	}
+	public JComboBox getCbFormato() {
+		return cbFormato;
+	}
+	public JTextField getTxtSrc() {
+		return txtSrc;
 	}
 }

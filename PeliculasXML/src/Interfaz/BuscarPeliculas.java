@@ -54,7 +54,7 @@ public class BuscarPeliculas extends JFrame {
 	private JTable table;
 	
 	private DefaultTableModel modelo;
-	private String[] columnas = {"Titulo", "Categoria", "Director", "A–o"};
+	private String[] columnas = {"Titulo", "Categoria", "Formato", "Director", "A–o"};
 	private String[][] datos;
 
 	public BuscarPeliculas() {
@@ -152,12 +152,13 @@ public class BuscarPeliculas extends JFrame {
 				NodeList camposPelicula = peliculas.item(i).getChildNodes();
 					
 				String categoria = camposPelicula.item(1).getParentNode().getAttributes().getNamedItem("categoria").getNodeValue();
+				String formato = camposPelicula.item(1).getParentNode().getAttributes().getNamedItem("formato").getNodeValue();
 				String src = camposPelicula.item(1).getParentNode().getAttributes().getNamedItem("src").getNodeValue();
 					
 				String titulo = camposPelicula.item(1).getFirstChild().getNodeValue();
 				String director = camposPelicula.item(3).getFirstChild().getNodeValue();
 				String anyo = camposPelicula.item(5).getFirstChild().getNodeValue();
-				Pelicula pelicula = new Pelicula(titulo, director, categoria, src, new String[0], Integer.parseInt(anyo));
+				Pelicula pelicula = new Pelicula(titulo, director, categoria, formato, src, new String[0], Integer.parseInt(anyo));
 				encontradas.add(pelicula);
 			}
 			
@@ -183,11 +184,12 @@ public class BuscarPeliculas extends JFrame {
 			modelo.removeRow(0);
 		
 		for(Pelicula peli: peliculasEncontradas){
-			String[] datos = new String[4];
+			String[] datos = new String[5];
 			datos[0] = peli.getTitulo();
 			datos[1] = peli.getCategoria();
-			datos[2] = peli.getDirector();
-			datos[3] = Integer.toString(peli.getAnyo());
+			datos[2] = peli.getFormato();
+			datos[3] = peli.getDirector();
+			datos[4] = Integer.toString(peli.getAnyo());
 			modelo.addRow(datos);
 		}
 	}

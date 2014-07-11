@@ -24,7 +24,7 @@ public class Menu extends JFrame {
 		JButton btnNuevaPelcula = new JButton("Nueva Pel\u00EDcula");
 		btnNuevaPelcula.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Pelicula nuevaPelicula = new Pelicula();
+				AddPelicula nuevaPelicula = new AddPelicula();
 				nuevaPelicula.setVisible(true);
 			}
 		});

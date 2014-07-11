@@ -23,8 +23,11 @@ import org.xml.sax.SAXException;
 import Fuente.Pelicula;
 
 import javax.swing.JTextPane;
+
 import java.awt.Color;
+
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -88,6 +91,10 @@ public class VerPelicula extends JFrame {
 					peliculaActual--;
 					mostrarPelicula(peliculaActual);
 				}
+				else{
+					peliculaActual = listadoPeliculas.size() - 1;
+					mostrarPelicula(peliculaActual);
+				}
 			}
 		});
 		btnAnterior.setBounds(0, 331, 117, 29);
@@ -100,10 +107,23 @@ public class VerPelicula extends JFrame {
 					peliculaActual++;
 					mostrarPelicula(peliculaActual);
 				}
+				else{
+					peliculaActual = 0;
+					mostrarPelicula(peliculaActual);
+				}
 			}
 		});
 		btnSiguiente.setBounds(318, 331, 117, 29);
 		contentPane.add(btnSiguiente);
+		
+		JButton btnCerrar = new JButton("Cerrar");
+		btnCerrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+			}
+		});
+		btnCerrar.setBounds(161, 331, 117, 29);
+		contentPane.add(btnCerrar);
 		
 		cargarPeliculas();
 		
@@ -143,6 +163,7 @@ public class VerPelicula extends JFrame {
 				String titulo = null;
 				String director = null;
 				String categoria = null;
+				String formato = null;
 				String src = null;
 				String anyo = "0";
 				
@@ -150,13 +171,19 @@ public class VerPelicula extends JFrame {
 				NodeList datosPelicula = unaPelicula.getChildNodes();
 				
 				categoria = unaPelicula.getAttributes().getNamedItem("categoria").getNodeValue();
+				formato = unaPelicula.getAttributes().getNamedItem("formato").getNodeValue();
 				src = unaPelicula.getAttributes().getNamedItem("src").getNodeValue();
+				
+				System.out.println(categoria);
+				System.out.println(formato);
+				System.out.println(src);
 				
 				Node nTitulo = datosPelicula.item(1);
 				if(nTitulo.getNodeType() == Node.ELEMENT_NODE){
 					Node texto = nTitulo.getFirstChild();
 					if(texto != null && texto.getNodeType() == Node.TEXT_NODE){
 						titulo = texto.getNodeValue();
+						System.out.println(titulo);
 					}
 				}
 				
@@ -165,6 +192,7 @@ public class VerPelicula extends JFrame {
 					Node texto = nDirector.getFirstChild();
 					if(texto != null && texto.getNodeType() == Node.TEXT_NODE){
 						director = texto.getNodeValue();
+						System.out.println(director);
 					}
 				}
 				
@@ -174,10 +202,12 @@ public class VerPelicula extends JFrame {
 					Node texto = nAnyo.getFirstChild();
 					if(texto != null && texto.getNodeType() == Node.TEXT_NODE){
 						anyo = texto.getNodeValue();
+						System.out.println(anyo);
 					}
 				}
 				
-				pelicula = new Pelicula(titulo, director, categoria, src, new String[0], Integer.parseInt(anyo));
+				pelicula = new Pelicula(titulo, director, categoria, formato, src, new String[0], Integer.parseInt(anyo));
+				System.out.println(pelicula);
 				listadoPeliculas.add(pelicula);
 			}
 			
